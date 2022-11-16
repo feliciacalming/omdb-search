@@ -3,25 +3,38 @@ import { IMovie } from "./models/IMovie";
 import { IMovieExtended } from "./models/IMovieExtended";
 import { IOmdbResponse } from "./models/IOmdbResponse";
 
+//startpage och input
 const startpageContainer: HTMLDivElement = document.createElement("div");
 const startpageText: HTMLHeadingElement = document.createElement("h1");
+
 const inputContainer: HTMLElement = document.createElement("section");
 const userInput: HTMLInputElement = document.createElement("input");
 userInput.type = "text";
 const inputBtn: HTMLButtonElement = document.createElement("button");
-const movieSearchResultsContainer: HTMLDivElement =
-  document.createElement("div");
-const errorMsgContainer: HTMLDivElement = document.createElement("div");
-const errorMsg: HTMLParagraphElement = document.createElement("p");
 
-// klasser
 startpageContainer.classList.add("startpage-container");
 startpageText.classList.add("header");
 inputContainer.classList.add("input");
 userInput.classList.add("input__text");
 inputBtn.classList.add("input__btn");
+
+userInput.placeholder = "vad vill du kolla på?";
+inputBtn.innerHTML = "Search!";
+startpageText.innerHTML = "omdb search";
+
+//search result
+const movieSearchResultsContainer: HTMLDivElement =
+  document.createElement("div");
+const errorMsgContainer: HTMLDivElement = document.createElement("div");
+const errorMsg: HTMLParagraphElement = document.createElement("p");
+const nextBtn: HTMLButtonElement = document.createElement("button");
+let currentPage: number = 1;
+
 errorMsgContainer.classList.add("input__error");
 movieSearchResultsContainer.classList.add("search-result-container");
+nextBtn.classList.add("nextpageBtn");
+
+nextBtn.innerHTML = "next page";
 
 //appendChild
 inputContainer.appendChild(userInput);
@@ -33,24 +46,15 @@ startpageContainer.appendChild(movieSearchResultsContainer);
 errorMsgContainer.appendChild(errorMsg);
 document.body.appendChild(startpageContainer);
 
-//innerHTML
-userInput.placeholder = "vad vill du kolla på?";
-inputBtn.innerHTML = "Search!";
-startpageText.innerHTML = "omdb search";
-
-////
-
-//funktion för att sätta markören i inputrutan när sidan laddas
-
+//funktion för att sätta textmarkören i inputrutan när sidan laddas
 function setCaret() {
   userInput.select();
   userInput.setSelectionRange(userInput.value.length, userInput.value.length);
 }
 
-// window.onload = setCaret();
+setCaret();
 
-// inputBtn.addEventListener("click", () => {
-
+//funktion för att hämta filmer från omdb
 function searchForMovies() {
   movieSearchResultsContainer.innerHTML = "";
   errorMsg.innerHTML = "";
@@ -76,8 +80,8 @@ function searchForMovies() {
         "Whoops! Kunde inte hitta det du sökte efter. :( Prova igen!";
     });
 }
-// });
 
+//funktion som skapar html av listan med filmer
 function handleData(movie: IMovie[]) {
   for (let i = 0; i < movie.length; i++) {
     let movieContainer: HTMLDivElement = document.createElement("div");
@@ -102,12 +106,14 @@ function handleData(movie: IMovie[]) {
     movieContainer.appendChild(title);
     movieContainer.appendChild(image);
     movieSearchResultsContainer.appendChild(movieContainer);
+    movieSearchResultsContainer.appendChild(nextBtn);
   }
 }
 
-function extendInformation(movie: IMovie) {
-  console.log("du klickade");
+// funktion för att skapa och visa en modal "pop-up" med mer info när man klickar på en film
+// (som jag skapat själv istället för att använda bootstrap av nån anledning :) )
 
+function extendInformation(movie: IMovie) {
   axios
     .get<IMovieExtended>(
       "https://omdbapi.com/?apikey=db07c8df&i=" + movie.imdbID
@@ -144,6 +150,7 @@ function extendInformation(movie: IMovie) {
       director.classList.add("modal__director");
       actors.classList.add("modal__actors");
       plot.classList.add("modal__plot");
+
       modal.style.display = "block";
 
       movieSearchResultsContainer.addEventListener(
@@ -163,17 +170,24 @@ function extendInformation(movie: IMovie) {
     });
 }
 
-/******* eventlyssnare för input *******/
-
+//eventlyssnare för att tömma input-texten när den är i fokus
 userInput.addEventListener("focus", () => {
   userInput.value = "";
   userInput.placeholder = "";
 });
 
-//eventlyssnare för sök-knappen:
+//eventlyssnare för att börja söka efter filmer när man skrivit tre tecken
+userInput.addEventListener("input", () => {
+  if (userInput.value.length > 2) {
+    searchForMovies();
+  }
+});
 
+//eventlyssnare för sök-knappen:
 inputBtn.addEventListener("click", searchForMovies);
 
+//eventlyssnare för att kunna trycka på "enter" istället för att klicka på sök-knappen
+//(eftersom jag inte använt av mig av submit-knapp)
 userInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     searchForMovies();
@@ -181,7 +195,6 @@ userInput.addEventListener("keydown", (event) => {
 });
 
 //eventlyssnare för header:
-
 startpageText.addEventListener("click", () => {
   location.reload();
 });
