@@ -36,16 +36,6 @@ nextBtn.classList.add("nextpageBtn");
 
 nextBtn.innerHTML = "next page";
 
-//appendChild
-inputContainer.appendChild(userInput);
-inputContainer.appendChild(inputBtn);
-inputContainer.appendChild(errorMsgContainer);
-startpageContainer.appendChild(startpageText);
-startpageContainer.appendChild(inputContainer);
-startpageContainer.appendChild(movieSearchResultsContainer);
-errorMsgContainer.appendChild(errorMsg);
-document.body.appendChild(startpageContainer);
-
 //funktion för att sätta textmarkören i inputrutan när sidan laddas
 function setCaret() {
   userInput.select();
@@ -61,7 +51,7 @@ function searchForMovies() {
 
   axios
     .get<IOmdbResponse>(
-      "https://omdbapi.com/?apikey=db07c8df&s=" + userInput.value
+      `https://omdbapi.com/?apikey=db07c8df&s=${userInput.value}&page=${currentPage}`
     )
     .then((response) => {
       if (response.status >= 200 && response.status <= 299) {
@@ -98,7 +88,7 @@ function handleData(movie: IMovie[]) {
     image.src = movie[i].Poster;
 
     movieContainer.addEventListener("click", () => {
-      extendInformation(movie[i]);
+      displayModal(movie[i]);
 
       // window.open("https://www.imdb.com/title/" + movie[i].imdbID, "_blank");
     });
@@ -113,7 +103,7 @@ function handleData(movie: IMovie[]) {
 // funktion för att skapa och visa en modal "pop-up" med mer info när man klickar på en film
 // (som jag skapat själv istället för att använda bootstrap av nån anledning :) )
 
-function extendInformation(movie: IMovie) {
+function displayModal(movie: IMovie) {
   axios
     .get<IMovieExtended>(
       "https://omdbapi.com/?apikey=db07c8df&i=" + movie.imdbID
@@ -170,23 +160,23 @@ function extendInformation(movie: IMovie) {
     });
 }
 
-//eventlyssnare för att tömma input-texten när den är i fokus
+//eventlistener för att tömma input-texten när den är i fokus
 userInput.addEventListener("focus", () => {
   userInput.value = "";
   userInput.placeholder = "";
 });
 
-//eventlyssnare för att börja söka efter filmer när man skrivit tre tecken
+//eventlistener för att börja söka efter filmer när man skrivit tre tecken
 userInput.addEventListener("input", () => {
   if (userInput.value.length > 2) {
     searchForMovies();
   }
 });
 
-//eventlyssnare för sök-knappen:
+//eventlistener för sök-knappen:
 inputBtn.addEventListener("click", searchForMovies);
 
-//eventlyssnare för att kunna trycka på "enter" istället för att klicka på sök-knappen
+//eventlistener för att kunna trycka på "enter" istället för att klicka på sök-knappen
 //(eftersom jag inte använt av mig av submit-knapp)
 userInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
@@ -194,7 +184,30 @@ userInput.addEventListener("keydown", (event) => {
   }
 });
 
-//eventlyssnare för header:
+//eventlistener för header:
 startpageText.addEventListener("click", () => {
   location.reload();
 });
+
+//eventlistener för att visa fler resultat:
+nextBtn.addEventListener("click", () => {
+  currentPage++;
+  axios
+    .get<IOmdbResponse>(
+      `https://omdbapi.com/?apikey=db07c8df&s=${userInput.value}&page=${currentPage}`
+    )
+    .then((response) => {
+      handleData(response.data.Search);
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+});
+
+//appendChild
+inputContainer.appendChild(userInput);
+inputContainer.appendChild(inputBtn);
+inputContainer.appendChild(errorMsgContainer);
+startpageContainer.appendChild(startpageText);
+startpageContainer.appendChild(inputContainer);
+startpageContainer.appendChild(movieSearchResultsContainer);
+errorMsgContainer.appendChild(errorMsg);
+document.body.appendChild(startpageContainer);

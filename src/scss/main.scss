@@ -1,3 +1,7 @@
 @use "startpage";
 @use "searchresults";
 @use "modal";
+
+html {
+    scroll-behavior: smooth;
+}
