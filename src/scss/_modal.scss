@@ -9,6 +9,8 @@
     width: 100%;
     height: 100%;
     // overflow: auto;
+
+    @include mix.desktop {
  
     &__container {
         
@@ -40,6 +42,7 @@
     &__title, &__year, &__director, &__actors {
        margin: 0;
     }
+   }
     
   }
   

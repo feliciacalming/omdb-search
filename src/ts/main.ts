@@ -167,11 +167,11 @@ userInput.addEventListener("focus", () => {
 });
 
 //eventlistener för att börja söka efter filmer när man skrivit tre tecken
-userInput.addEventListener("input", () => {
-  if (userInput.value.length > 2) {
-    searchForMovies();
-  }
-});
+// userInput.addEventListener("input", () => {
+//   // if (userInput.value.length > 2) {
+//   searchForMovies();
+//   // }
+// });
 
 //eventlistener för sök-knappen:
 inputBtn.addEventListener("click", searchForMovies);
