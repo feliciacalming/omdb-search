@@ -37,7 +37,7 @@ searchResults.classList.add("search-result");
 movieSearchResultsContainer.classList.add("search-result__container");
 nextBtn.classList.add("nextpageBtn");
 
-nextBtn.innerHTML = "next page";
+nextBtn.innerHTML = "load more movies..";
 
 //funktion för att sätta textmarkören i inputrutan när sidan laddas
 function setCaret() {
@@ -148,7 +148,7 @@ function displayModal(movie: IMovie) {
       actors.classList.add("modal__actors");
       plot.classList.add("modal__plot");
 
-      modal.style.display = "block";
+      modal.style.display = "flex";
 
       movieSearchResultsContainer.addEventListener(
         "click",
