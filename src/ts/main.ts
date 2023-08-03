@@ -92,8 +92,6 @@ function handleData(movie: IMovie[]) {
 
     movieContainer.addEventListener("click", () => {
       displayModal(movie[i]);
-
-      // window.open("https://www.imdb.com/title/" + movie[i].imdbID, "_blank");
     });
 
     movieContainer.appendChild(title);
