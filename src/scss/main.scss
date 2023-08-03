@@ -3,5 +3,9 @@
 @use "modal";
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
+}
+
+.hide {
+  display: none;
 }

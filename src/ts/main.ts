@@ -23,15 +23,18 @@ inputBtn.innerHTML = "Search!";
 startpageText.innerHTML = "omdb search";
 
 //search result
+const searchResults: HTMLElement = document.createElement("section");
 const movieSearchResultsContainer: HTMLDivElement =
   document.createElement("div");
+
 const errorMsgContainer: HTMLDivElement = document.createElement("div");
 const errorMsg: HTMLParagraphElement = document.createElement("p");
 const nextBtn: HTMLButtonElement = document.createElement("button");
 let currentPage: number = 1;
 
 errorMsgContainer.classList.add("input__error");
-movieSearchResultsContainer.classList.add("search-result-container");
+searchResults.classList.add("search-result");
+movieSearchResultsContainer.classList.add("search-result__container");
 nextBtn.classList.add("nextpageBtn");
 
 nextBtn.innerHTML = "next page";
@@ -96,7 +99,7 @@ function handleData(movie: IMovie[]) {
     movieContainer.appendChild(title);
     movieContainer.appendChild(image);
     movieSearchResultsContainer.appendChild(movieContainer);
-    movieSearchResultsContainer.appendChild(nextBtn);
+    searchResults.appendChild(nextBtn);
   }
 }
 
@@ -118,6 +121,7 @@ function displayModal(movie: IMovie) {
       let img: HTMLImageElement = document.createElement("img");
       let title: HTMLHeadingElement = document.createElement("h3");
       let year: HTMLHeadingElement = document.createElement("h5");
+      let genre: HTMLHeadingElement = document.createElement("h6");
       let actors: HTMLHeadingElement = document.createElement("h6");
       let director: HTMLHeadingElement = document.createElement("h6");
       let plot: HTMLParagraphElement = document.createElement("p");
@@ -125,9 +129,11 @@ function displayModal(movie: IMovie) {
       img.src = response.data.Poster;
       title.innerHTML = response.data.Title;
       year.innerHTML = response.data.Released;
+      genre.innerHTML = response.data.Genre;
       director.innerHTML = response.data.Director;
       plot.innerHTML = response.data.Plot;
 
+      genre.innerHTML = "Genre: " + response.data.Genre;
       director.innerHTML = "Director: " + response.data.Director;
       actors.innerHTML = "Actors: " + response.data.Actors;
 
@@ -137,6 +143,7 @@ function displayModal(movie: IMovie) {
       img.classList.add("modal__img");
       title.classList.add("modal__title");
       year.classList.add("modal__year");
+      genre.classList.add("modal__genre");
       director.classList.add("modal__director");
       actors.classList.add("modal__actors");
       plot.classList.add("modal__plot");
@@ -151,6 +158,7 @@ function displayModal(movie: IMovie) {
       modalContainer.appendChild(img);
       modalContent.appendChild(title);
       modalContent.appendChild(year);
+      modalContent.appendChild(genre);
       modalContent.appendChild(director);
       modalContent.appendChild(actors);
       modalContent.append(plot);
@@ -208,6 +216,7 @@ inputContainer.appendChild(inputBtn);
 inputContainer.appendChild(errorMsgContainer);
 startpageContainer.appendChild(startpageText);
 startpageContainer.appendChild(inputContainer);
-startpageContainer.appendChild(movieSearchResultsContainer);
+searchResults.appendChild(movieSearchResultsContainer);
+startpageContainer.appendChild(searchResults);
 errorMsgContainer.appendChild(errorMsg);
 document.body.appendChild(startpageContainer);

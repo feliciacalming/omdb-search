@@ -1,48 +1,73 @@
 @use "mixins" as mix;
 
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    // overflow: auto;
 
-    @include mix.desktop {
- 
-    &__container {
-        
-       margin: 10% auto;
-       background-color: rgba(26, 25, 25, 0.95);
-       z-index: 1;
-       width: 50%;
-       height: 400px;
-       display: flex;
-       border: 1px solid rgb(66, 160, 135);
-       border-radius: 10px;
-       padding: 10px;
-    }
- 
-    &__img {
-       width: 37%;
-       padding: 5px;
-       height: min-content;
-       align-self: center;
-    }
- 
-    &__content {
-       display: flex;
-       flex-direction: column;
-       padding: 10px;
-       margin-top: 10px;
-    }
- 
-    &__title, &__year, &__director, &__actors {
-       margin: 0;
-    }
-   }
-    
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  // top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(26, 25, 25, 0.95);
+  @include mix.flexCenter;
+  flex-direction: column;
+  // overflow: auto;
+
+  &__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
-  
+
+  &__content {
+    @include mix.flexCenter;
+    flex-direction: column;
+    width: 80vw;
+  }
+
+  &__title,
+  &__year,
+  &__director,
+  &__actors,
+  &__genre {
+    margin: 0;
+  }
+
+  @include mix.desktop {
+    &__container {
+      margin: 10% auto;
+      background-color: rgba(26, 25, 25, 0.95);
+      z-index: 1;
+      width: 50%;
+      height: 400px;
+      display: flex;
+      border: 1px solid rgb(66, 160, 135);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    &__img {
+      width: 37%;
+      padding: 5px;
+      height: min-content;
+      align-self: center;
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    &__title,
+    &__year,
+    &__director,
+    &__actors,
+    &__genre {
+      margin: 0;
+    }
+  }
+}

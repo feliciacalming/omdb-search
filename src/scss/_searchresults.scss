@@ -1,64 +1,71 @@
 @use "mixins" as mix;
 
-.search-result-container {
+.search-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+
+  &__container {
     display: flex;
     justify-content: space-around;
-    align-items: flex-end;
     flex-wrap: wrap;
     width: 100%;
     background-color: rgb(21, 21, 21);
-    
- }
- 
- .movie {
-   width: 30%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 5px;
+    gap: 2vw;
+  }
+}
+
+.movie {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 5px;
+
+  @include mix.desktop {
+    width: 15vw;
+    margin: 15px;
+  }
+
+  &__title {
+    font-family: gill sans;
+    font-size: 10px;
+    text-align: center;
+    width: 80%;
+    color: white;
+    text-shadow: 1px 1px 0 #000, 1px 1px 0 #000, 1px 1px 0 #000, 1px 1px 0 #000;
 
     @include mix.desktop {
-      width: 15%;
-      margin: 15px;
+      width: 80%;
+      font-size: 12px;
+    }
+  }
+
+  &__poster {
+    width: 100px;
+    height: 170px;
+    margin-bottom: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    @include mix.desktop {
+      width: 150px;
+      height: 225px;
+      margin-bottom: 20px;
     }
 
- 
-    &__title {
-       font-family: gill sans;
-       font-size: 10px;
-       text-align: center;
-       width: 80%;
-       color: white;
-       text-shadow: 1px 1px 0 #000, 1px 1px 0 #000, 1px 1px 0 #000, 1px 1px 0 #000;
-
-       @include mix.desktop {
-         width: 80%;
-         font-size: 12px;
-       }
+    &:hover {
+      cursor: pointer;
+      box-shadow: rgba(83, 83, 83, 0.12) 0px 20px 54px 20px,
+        rgba(239, 237, 240, 0.32) 0px 2px 30px 5px;
     }
- 
-    &__poster {
-       width: 100px;
-       height: 170px;
-       margin-bottom: 5px;
-       border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+}
 
-       @include mix.desktop {
-       width: 150px;
-       height: 225px;
-       margin-bottom: 20px;
-       }
-
-       &:hover {
-         cursor: pointer;
-         box-shadow: rgba(83, 83, 83, 0.12) 0px 20px 54px 20px, rgba(239, 237, 240, 0.32) 0px 2px 30px 5px;
-       }
- 
-    }
- }
-
- .nextpageBtn {
-    @include mix.btn;
-    position: absolute;
-    display: block;
- }
+.nextpageBtn {
+  @include mix.btn;
+  //  position: absolute;
+  display: block;
+  width: 10%;
+}
